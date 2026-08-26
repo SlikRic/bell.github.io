@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+	<title>index</title>
+	<style>
+		html {
+			height:100%;
+		}
+		body {
+			background-color:#FFF;
+			margin:0;
+			height:100%;
+		}
+	</style>
+	<!-- copy these lines to your document head: -->
+
+	<meta name="viewport" content="user-scalable=yes, width=980" />
+	
+	<meta name="format-detection" content="telephone=no" />
+		
+	<script>
+  
+  // Fonction qui permet de démarrer la vidéo
+  function playVideo1(id) {
+    
+    resetTrackingVariables();
+    // Instruction pour aller vers la scène où se trouve la vidéo
+    HYPE.documents['index'].showSceneNamed('Video1')
+    
+    // Instruction pour démarrer la vidéo
+    document.getElementById(id).play();
+  }
+  
+  function playVideo2(id) {
+    
+    resetTrackingVariables();
+    // Instruction pour aller vers la scène où se trouve la vidéo
+    HYPE.documents['index'].showSceneNamed('Video2')
+    
+    // Instruction pour démarrer la vidéo
+    document.getElementById(id).play();
+  }
+  
+  function playVideo3(id) {
+    
+    resetTrackingVariables();
+    // Instruction pour aller vers la scène où se trouve la vidéo
+    HYPE.documents['index'].showSceneNamed('Video3')
+    
+    // Instruction pour démarrer la vidéo
+    document.getElementById(id).play();
+  }
+  
+  function playVideo4(id) {
+    
+    resetTrackingVariables();
+    // Instruction pour aller vers la scène où se trouve la vidéo
+    HYPE.documents['index'].showSceneNamed('Video4')
+    
+    // Instruction pour démarrer la vidéo
+    document.getElementById(id).play();
+  }
+  
+  function playVideo5(id) {
+    
+    resetTrackingVariables();
+    // Instruction pour aller vers la scène où se trouve la vidéo
+    HYPE.documents['index'].showSceneNamed('Video5')
+    
+    // Instruction pour démarrer la vidéo
+    document.getElementById(id).play();
+  }
+  
+  // Fonction qui permet de fermer la vidéo 
+  function closeVideo(id) {
+    // 1. Pause the active video element
+   document.getElementById(id).pause();
+    if (document.getElementById(id).webkitExitFullscreen) {
+	    document.getElementById(id).webkitExitFullscreen();
+	} else if (document.exitFullscreen && document.fullscreenElement === document.getElementById(id)) {
+	    document.exitFullscreen();
+	}
+
+    var hypeDoc = HYPE.documents['index'];
+    
+    // 2. Go back to your Main Scene
+    hypeDoc.showSceneNamed('Main');
+
+    // 3. Jump back to the exact second we saved
+    if (typeof window.savedCarouselTime !== 'undefined') {
+        hypeDoc.goToTimeInTimelineNamed(window.savedCarouselTime, 'Main Timeline');
+        
+        // Force the card stacking script to run so the correct card pops to the front instantly
+        if (typeof hypeDoc.functions().cardStacking === 'function') {
+            hypeDoc.functions().cardStacking(hypeDoc, null, null);
+        }
+    }
+}
+  
+  
+  
+ var vidElm;
+var tracked_01;
+var tracked_25;
+var tracked_50;
+var tracked_75;
+var tracked_100;
+var videoCursor;
+var videoDuration;
+var firstQurt;
+var secondQurt;
+var thirdQurt;
+var trackPerc;
+var trackPercentage;
+
+
+
+
+function myCallback(hypeDocument, element, event) {
+    // run code here
+    vidElm = document.getElementById('videoUn');
+    console.log(vidElm);
+}
+
+if ("HYPE_eventListeners" in window === false) {
+    window.HYPE_eventListeners = Array();
+}
+
+window.HYPE_eventListeners.push({ "type": "HypeSceneLoad", "callback": myCallback });
+
+function resetTrackingVariables() {
+    tracked_01 = false;
+    tracked_25 = false;
+    tracked_50 = false;
+    tracked_75 = false;
+    tracked_100 = false;
+
+}
+
+function trackVideo() {
+
+    videoCursor = vidElm.currentTime;
+    videoDuration = vidElm.duration;
+    firstMill = 0.01;
+    firstQurt = videoDuration / 4;
+    secondQurt = firstQurt * 2;
+    thirdQurt = firstQurt * 3;
+
+    //position de lecture de la video en secondes et millisecondes.
+    //videoPreciseCursor = vidElm.currentTime.toFixed(2);
+
+    trackPerc = vidElm.currentTime * 100 / videoDuration;
+    trackPercentage = Math.trunc(trackPerc);
+
+    if (!tracked_01) {
+        if (videoCursor >= firstMill) {
+            tracked_01 = true;
+            console.log("%c _video_01pc", 'color: #009933');
+            LP.Pub.Tracking.CustomerEventPublisher.publish('Custom_video_0.01sec');
+        }
+    }
+    
+    if (videoCursor >= firstQurt && videoCursor < secondQurt) {
+        if (!tracked_25) {
+            tracked_25 = true;
+            console.log("%c Custom_video_25pc", 'color: #009933');
+            LP.Pub.Tracking.CustomerEventPublisher.publish('Custom_video_25pc');
+        }
+    }
+    if (videoCursor >= secondQurt && videoCursor < thirdQurt) {
+        if (!tracked_50) {
+            tracked_50 = true;
+            console.log("%c Custom_video_50pc ", 'color: #009933');
+            LP.Pub.Tracking.CustomerEventPublisher.publish('Custom_video_50pc');
+        }
+    }
+    
+    if (videoCursor > thirdQurt) {
+        if (!tracked_75) {
+            tracked_75 = true;
+            console.log("%c Custom_video_75pc", 'color: #009933');
+            LP.Pub.Tracking.CustomerEventPublisher.publish('Custom_video_75pc');
+        }
+    }
+    
+    if (trackPercentage >= 98) {
+        if (!tracked_100) {
+            tracked_100 = true;
+            console.log("%c Custom_video_100pc", 'color: #009933');
+            LP.Pub.Tracking.CustomerEventPublisher.publish('Custom_video_100pc');
+        }
+    }
+}
+</script>	
+
+	<!-- end copy -->
+	<script type="text/javascript" charset="utf-8" src="index.hyperesources/HYPE-780.thin.min.js"></script>
+  </head>
+  <body>
+	<!-- copy these lines to your document: -->
+
+	<div id="index_hype_container" class="HYPE_document" style="margin:auto;position:relative;width:980px;height:670px;overflow:hidden;">
+	</div>
+
+	<!-- end copy -->
+	<script type="text/javascript" charset="utf-8">
+		//	HYPE.documents["index"]
+
+(function(){(function m(){function k(a,b,c,d){var e=!1;null==window[a]&&(null==window[b]?(window[b]=[],window[b].push(m),a=document.getElementsByTagName("head")[0],b=document.createElement("script"),e=l,false==!0&&(e=""),b.type="text/javascript",""!=d&&(b.integrity=d,b.setAttribute("crossorigin","anonymous")),b.src=e+"/"+c,a.appendChild(b)):window[b].push(m),e=!0);return e}var l="index.hyperesources",f="index",g="index_hype_container";if(false==
+!1)try{for(var c=document.getElementsByTagName("script"),a=0;a<c.length;a++){var d=c[a].src,b=null!=d?d.indexOf("/index_hype_generated_script.js"):-1;if(-1!=b){l=d.substr(0,b);break}}}catch(p){}c=null==navigator.userAgentData&&navigator.userAgent.match(/MSIE (\d+\.\d+)/);c=parseFloat(c&&c[1])||null;d=!0==(null!=window.HYPE_780F||null!=window.HYPE_dtl_780F)||false==!0||null!=c&&10>c;a=!0==d?"HYPE-780.full.min.js":"HYPE-780.thin.min.js";c=!0==d?"F":"T";
+d=d?"":"";if(true==!1&&(a=k("HYPE_780"+c,"HYPE_dtl_780"+c,a,d),false==!0&&(a=a||k("HYPE_w_780","HYPE_wdtl_780","HYPE-780.waypoints.min.js","")),false==!0&&(a=a||k("Matter","HYPE_pdtl_780","HYPE-780.physics.min.js","")),a))return;d=window.HYPE.documents;if(null!=d[f]){b=1;a=f;do f=""+a+"-"+b++;while(null!=d[f]);for(var e=
+document.getElementsByTagName("div"),b=!1,a=0;a<e.length;a++)if(e[a].id==g&&null==e[a].getAttribute("HYP_dn")){var b=1,h=g;do g=""+h+"-"+b++;while(null!=document.getElementById(g));e[a].id=g;b=!0;break}if(!1==b)return}b=[];b=[{name:"cardStacking",source:"function(hypeDocument, element, event) {\t// 1. Get references to all 5 of your cards\n    var c1 = document.getElementById('card1');\n    var c2 = document.getElementById('card2');\n    var c3 = document.getElementById('card3');\n    var c4 = document.getElementById('card4');\n    var c5 = document.getElementById('card5');\n    \n    // Put them in an array to easily loop through them\n    var allCards = [c1, c2, c3, c4, c5];\n    \n    // 2. Identify which card needs to come to the front.\n    // We do this dynamically by checking which keyframe/second our Carrousel timeline is currently on!\n    var currentTime = hypeDocument.currentTimeInTimelineNamed('Main Timeline');\n    var targetCardId = '';\n\n    // We round the time to the nearest second to avoid floating-point math bugs\n    var currentSecond = Math.round(currentTime);\n\n    if (currentSecond === 0) {\n        targetCardId = 'card1'; // At 0s, Card 1 is in the center\n    } else if (currentSecond === 1) {\n        targetCardId = 'card2'; // At 1s, Card 2 is in the center\n    } else if (currentSecond === 2) {\n        targetCardId = 'card3'; // At 2s, Card 3 is in the center\n    } else if (currentSecond === 3) {\n        targetCardId = 'card4'; // At 3s, Card 4 is in the center\n    } else if (currentSecond === 4) {\n        targetCardId = 'card5'; // At 4s, Card 5 is in the center\n    }\n    \n\n    // 3. Loop through all cards to update their Z-Index\n    allCards.forEach(function(card) {\n    var currentScale = hypeDocument.getElementProperty(card, 'scaleX');\n        if (card) {\n            if (card.id === targetCardId) {\n                // Bring the active center card to the absolute front\n                hypeDocument.setElementProperty(card, 'z-index', 9);\n                card.style.opacity = \"1.0\"; // Ensure it is fully visible\n            } else {\n                // Push non-active cards to the back\n                hypeDocument.setElementProperty(card, 'z-index', 2);\n            }\n        }\n    });\n}",identifier:"55"}];e={};h={};for(a=0;a<b.length;a++)try{h[b[a].identifier]=b[a].name,e[b[a].name]=eval("(function(){return "+b[a].source+"})();")}catch(n){window.console&&window.console.log(n),e[b[a].name]=function(){}}c=new window["HYPE_780"+c](f,g,{"25":{p:1,n:"Moment1_Caufield.png",g:"206",t:"@1x"},"18":{p:1,n:"Player5_Houde.png",g:"269",o:true,t:"@1x"},"10":{p:1,n:"Number_20.png",g:"176",t:"@1x"},"26":{p:1,n:"Moment2_Suzuki.png",g:"207",t:"@1x"},"19":{p:1,n:"Player5_Houde_2x.png",g:"269",o:true,t:"@2x"},"11":{p:1,n:"Player3_Slaf.png",g:"186",t:"@1x"},"27":{p:1,n:"Moment3_Slaf.png",g:"208",t:"@1x"},"0":{p:1,n:"Logo_RDS_Rev.png",g:"136",t:"@1x"},"12":{p:1,n:"Player2_Suzuki.png",g:"185",t:"@1x"},"1":{p:1,n:"Web_icon_blanc.png",g:"134",t:"@1x"},"28":{p:1,n:"Moment4_Hutson.png",g:"209",t:"@1x"},"20":{n:"Video2_Suzuki.mp4",g:"216",t:"video/mp4"},"2":{p:1,n:"Play_icon.png",g:"32",t:"@1x"},"13":{p:1,n:"Headline.png",g:"234",t:"@1x"},"3":{p:1,n:"Arrow.png",g:"169",t:"@1x"},"21":{n:"Video4_Hutson.mp4",g:"218",t:"video/mp4"},"14":{p:1,n:"Bg_Hockey.jpg",g:"236",t:"@1x"},"4":{p:1,n:"Close_icon.png",g:"84",t:"@1x"},"29":{p:1,n:"Moment5_Houde.png",g:"272",t:"@1x"},"5":{p:1,n:"Logo_Habs_Bell_Rev.png",g:"138",t:"@1x"},"15":{p:1,n:"Number_13.png",g:"174",t:"@1x"},"22":{n:"Video1_Caufield.mp4",g:"215",t:"video/mp4"},"6":{p:1,n:"Number_14.png",g:"175",t:"@1x"},"30":{p:1,n:"Speech_bubble.png",g:"276",t:"@1x"},"23":{n:"Video3_Slaf.mp4",g:"217",t:"video/mp4"},"16":{p:1,n:"Carte.jpg",g:"188",o:true,t:"@1x"},"7":{p:1,n:"Number_48.png",g:"177",t:"@1x"},"8":{p:1,n:"Player1_Caufield.png",g:"184",t:"@1x"},"24":{n:"Video5_Houde.mp4",g:"270",t:"video/mp4"},"17":{p:1,n:"Carte_2x.jpg",g:"188",o:true,t:"@2x"},"9":{p:1,n:"Player4_Hutson.png",g:"205",t:"@1x"}},
+l,[],e,[{n:"Main",o:"1",X:[0]},{n:"Video1",o:"57",X:[1]},{n:"Video2",o:"104",X:[2]},{n:"Video3",o:"114",X:[3]},{n:"Video4",o:"120",X:[4]},{n:"Video5",o:"126",X:[5]}],[{o:"3",p:"600px",cA:false,Y:980,Z:670,L:[],c:"#FFF",bY:1,d:980,U:{"281":{V:{"Main Timeline":"326"},W:"326",n:"Carte_2"},"288":{V:{"Main Timeline":"327"},W:"327",n:"Carte_3"},"318":{V:{"Main Timeline":"330"},W:"330",n:"Carte_5"},"307":{V:{"Main Timeline":"329"},W:"329",n:"Carte_4"},"295":{V:{"Main Timeline":"328"},W:"328",n:"Carte_1"}},T:{"330":{c:"318",q:false,z:2.15,i:"330",a:[{f:"c",y:1.15,z:0.15,i:"e",e:1,s:0,o:"323"},{f:"c",y:2,z:0.15,i:"e",e:0,s:1,o:"323"},{y:2.15,i:"e",s:0,z:0,o:"323",f:"c"}],n:"Main Timeline",f:30,b:[]},"329":{c:"307",q:false,z:2.15,i:"329",a:[{f:"c",y:1.15,z:0.15,i:"e",e:1,s:0,o:"308"},{f:"c",y:2,z:0.15,i:"e",e:0,s:1,o:"308"},{y:2.15,i:"e",s:0,z:0,o:"308",f:"c"}],n:"Main Timeline",f:30,b:[]},"326":{c:"281",q:false,z:1.15,i:"326",a:[{f:"c",y:0.15,z:0.15,i:"e",e:1,s:0,o:"283"},{f:"c",y:1,z:0.15,i:"e",e:0,s:1,o:"283"},{y:1.15,i:"e",s:0,z:0,o:"283",f:"c"}],n:"Main Timeline",f:30,b:[]},kTimelineDefaultIdentifier:{q:false,z:4,i:"kTimelineDefaultIdentifier",n:"Main Timeline",a:[{f:"c",y:0,z:1,i:"cR",e:0.8,s:0.6,o:"288"},{f:"c",y:0,z:1,i:"cQ",e:0.8,s:0.6,o:"288"},{f:"c",p:2,y:0,z:1,i:"ActionHandler",e:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},s:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"},{b:"kTimelineDefaultIdentifier",p:3,z:false,symbolOid:"2"}]},o:"kTimelineDefaultIdentifier"},{f:"c",y:0,z:1,i:"a",e:120,s:340,o:"295"},{f:"c",y:0,z:1,i:"e",e:0.6,s:1,o:"295"},{f:"c",y:0,z:0.1,i:"a",e:-240,s:386,o:"277"},{f:"c",y:0,z:1,i:"cR",e:0.8,s:0.98,o:"295"},{f:"c",y:0,z:1,i:"cQ",e:0.8,s:0.98,o:"295"},{f:"c",y:0,z:1,i:"e",e:1,s:0.6,o:"281"},{f:"c",y:0,z:1,i:"a",e:560,s:340,o:"288"},{f:"c",y:0,z:1,i:"cR",e:0.98,s:0.8,o:"281"},{f:"c",y:0,z:1,i:"cQ",e:0.98,s:0.8,o:"281"},{f:"c",y:0.1,z:0.2,i:"e",e:0.6,s:0,o:"288"},{y:0.1,i:"a",s:-240,z:0,o:"277",f:"c"},{f:"c",y:0.15,z:0.15,i:"a",e:340,s:560,o:"281"},{f:"c",y:0.2,z:0.1,i:"a",e:386,s:1020,o:"280"},{f:"c",y:1,z:1,i:"cR",e:0.8,s:0.6,o:"307"},{f:"c",y:1,z:1,i:"cQ",e:0.8,s:0.6,o:"307"},{f:"c",y:1,z:1,i:"e",e:1,s:0.6,o:"288"},{f:"c",y:1,z:1,i:"e",e:0.6,s:1,o:"281"},{f:"c",y:1,z:1,i:"cR",e:0.98,s:0.8,o:"288"},{f:"c",y:1,z:1,i:"cQ",e:0.98,s:0.8,o:"288"},{f:"c",y:1,z:1,i:"cR",e:0.8,s:0.98,o:"281"},{f:"c",y:1,z:1,i:"cQ",e:0.8,s:0.98,o:"281"},{f:"c",y:1,z:0.2,i:"e",e:0,s:0.6,o:"295"},{f:"c",y:1,z:1,i:"a",e:560,s:340,o:"307"},{f:"c",p:2,y:1,z:1,i:"ActionHandler",e:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},s:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},o:"kTimelineDefaultIdentifier"},{f:"c",y:1,z:1,i:"cR",e:0.6,s:0.8,o:"295"},{f:"c",y:1,z:1,i:"cQ",e:0.6,s:0.8,o:"295"},{f:"c",y:1,z:0.1,i:"a",e:-240,s:386,o:"280"},{f:"c",y:1,z:1,i:"a",e:340,s:120,o:"295"},{f:"c",y:1,z:0.15,i:"a",e:560,s:560,o:"288"},{f:"c",y:1,z:1,i:"a",e:120,s:340,o:"281"},{f:"c",y:1.1,z:0.2,i:"e",e:0.6,s:0,o:"307"},{y:1.1,i:"a",s:-240,z:0,o:"280",f:"c"},{f:"c",y:1.15,z:0.15,i:"a",e:340,s:560,o:"288"},{y:1.2,i:"e",s:0,z:0,o:"295",f:"c"},{f:"c",y:1.2,z:0.1,i:"a",e:386,s:1020,o:"303"},{f:"c",y:2,z:1,i:"cQ",e:0.98,s:0.8,o:"307"},{f:"c",y:2,z:1,i:"cR",e:0.98,s:0.8,o:"307"},{f:"c",p:2,y:2,z:1,i:"ActionHandler",e:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},s:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},o:"kTimelineDefaultIdentifier"},{f:"c",y:2,z:1,i:"e",e:1,s:0.6,o:"307"},{f:"c",y:2,z:1,i:"cR",e:0.8,s:0.6,o:"318"},{f:"c",y:2,z:1,i:"cQ",e:0.8,s:0.6,o:"318"},{f:"c",y:2,z:1,i:"e",e:0.6,s:1,o:"288"},{f:"c",y:2,z:1,i:"cR",e:0.8,s:0.98,o:"288"},{f:"c",y:2,z:1,i:"cQ",e:0.8,s:0.98,o:"288"},{f:"c",y:2,z:0.2,i:"e",e:0,s:0.6,o:"281"},{y:2,i:"cQ",s:0.6,z:0,o:"295",f:"c"},{y:2,i:"cR",s:0.6,z:0,o:"295",f:"c"},{f:"c",y:2,z:1,i:"cR",e:0.6,s:0.8,o:"281"},{f:"c",y:2,z:1,i:"cQ",e:0.6,s:0.8,o:"281"},{f:"c",y:2,z:0.15,i:"a",e:560,s:560,o:"307"},{f:"c",y:2,z:0.1,i:"a",e:-240,s:386,o:"303"},{f:"c",y:2,z:1,i:"a",e:560,s:340,o:"318"},{y:2,i:"a",s:340,z:0,o:"295",f:"c"},{f:"c",y:2,z:1,i:"a",e:340,s:120,o:"281"},{f:"c",y:2,z:1,i:"a",e:120,s:340,o:"288"},{f:"c",y:2.1,z:0.2,i:"e",e:0.6,s:0,o:"318"},{y:2.1,i:"a",s:-240,z:0,o:"303",f:"c"},{f:"c",y:2.15,z:0.15,i:"a",e:340,s:560,o:"307"},{y:2.2,i:"e",s:0,z:0,o:"281",f:"c"},{f:"c",y:2.2,z:0.1,i:"a",e:386,s:1020,o:"317"},{f:"c",p:2,y:3,z:1,i:"ActionHandler",e:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},s:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},o:"kTimelineDefaultIdentifier"},{f:"c",y:3,z:1,i:"cQ",e:0.8,s:0.98,o:"307"},{f:"c",y:3,z:1,i:"cR",e:0.8,s:0.98,o:"307"},{f:"c",y:3,z:1,i:"e",e:0.6,s:1,o:"307"},{f:"c",y:3,z:1,i:"cR",e:0.98,s:0.8,o:"318"},{f:"c",y:3,z:1,i:"cQ",e:0.98,s:0.8,o:"318"},{f:"c",y:3,z:1,i:"e",e:1,s:0.6,o:"318"},{f:"c",y:3,z:1,i:"cR",e:0.6,s:0.8,o:"288"},{f:"c",y:3,z:1,i:"cQ",e:0.6,s:0.8,o:"288"},{f:"c",y:3,z:0.2,i:"e",e:0,s:0.6,o:"288"},{y:3,i:"cR",s:0.6,z:0,o:"281",f:"c"},{y:3,i:"cQ",s:0.6,z:0,o:"281",f:"c"},{f:"c",y:3,z:1,i:"a",e:120,s:340,o:"307"},{f:"c",y:3,z:0.1,i:"a",e:-240,s:386,o:"317"},{f:"c",y:3,z:0.15,i:"a",e:560,s:560,o:"318"},{y:3,i:"a",s:340,z:0,o:"281",f:"c"},{f:"c",y:3,z:1,i:"a",e:340,s:120,o:"288"},{y:3.1,i:"a",s:-240,z:0,o:"317",f:"c"},{f:"c",y:3.15,z:0.15,i:"a",e:340,s:560,o:"318"},{y:3.2,i:"e",s:0,z:0,o:"288",f:"c"},{f:"c",y:3.2,z:0.1,i:"a",e:386,s:1020,o:"314"},{f:"c",p:2,y:4,z:0,i:"ActionHandler",s:{a:[{p:7,b:"kTimelineDefaultIdentifier",symbolOid:"2"},{p:4,h:"55"}]},o:"kTimelineDefaultIdentifier"},{y:4,i:"cQ",s:0.8,z:0,o:"307",f:"c"},{y:4,i:"cR",s:0.8,z:0,o:"307",f:"c"},{y:4,i:"e",s:0.6,z:0,o:"307",f:"c"},{y:4,i:"cR",s:0.98,z:0,o:"318",f:"c"},{y:4,i:"cQ",s:0.98,z:0,o:"318",f:"c"},{y:4,i:"e",s:1,z:0,o:"318",f:"c"},{y:4,i:"cR",s:0.6,z:0,o:"288",f:"c"},{y:4,i:"cQ",s:0.6,z:0,o:"288",f:"c"},{y:4,i:"a",s:120,z:0,o:"307",f:"c"},{y:4,i:"a",s:386,z:0,o:"314",f:"c"},{y:4,i:"a",s:340,z:0,o:"318",f:"c"},{y:4,i:"a",s:340,z:0,o:"288",f:"c"}],f:30,b:[{D:1.15,H:true,E:true,z:false,F:0,G:0,C:0,b:"326"},{D:0.15,H:true,E:true,z:false,F:0,G:0,C:0,b:"328"},{D:2.15,H:true,E:true,z:false,F:0,G:0,C:0,b:"327"},{D:3.15,H:true,E:false,z:false,F:0,G:0.5,C:0.15,b:"328"},{D:2.15,H:true,E:true,z:false,F:0,G:0,C:1,b:"329"},{D:2.15,H:true,E:false,z:false,F:0,G:1.5,C:1.15,b:"326"},{D:2,H:true,E:true,z:false,F:0,G:0,C:2,b:"330"},{D:1.15,H:true,E:false,z:false,F:0,G:2.5,C:2.15,b:"327"},{D:0.15,H:true,E:false,z:false,F:0,G:2.5,C:3.15,b:"329"},{D:0,H:true,E:false,z:false,F:0,G:2,C:4,b:"330"}]},"327":{c:"288",q:false,z:2.15,i:"327",a:[{f:"c",y:1.15,z:0.15,i:"e",e:1,s:0,o:"289"},{f:"c",y:2,z:0.15,i:"e",e:0,s:1,o:"289"},{y:2.15,i:"e",s:0,z:0,o:"289",f:"c"}],n:"Main Timeline",f:30,b:[]},"328":{c:"295",q:false,z:0.15,i:"328",a:[{f:"c",y:0,z:0.15,i:"e",e:0,s:1,o:"298"},{y:0.15,i:"e",s:0,z:0,o:"298",f:"c"}],n:"Main Timeline",f:30,b:[]}},bZ:180,O:["306","304","302","315","312","307","297","295","286","281","291","288","320","318","313","311","299","284","294","324","300","282","292","319","309","301","285","290","322","277","280","303","317","308","314","298","283","289","323","316","279","310","296","287","293","321","305","278","325"],n:"Untitled Layout","_":0,v:{"282":{h:"175",p:"no-repeat",x:"visible",a:200,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:9,bF:"281",b:32,d:61,k:"div",c:84},"317":{c:208,d:71,I:"Solid",e:1,J:"Solid",K:"Solid",L:"Solid",M:0,w:"<a onclick=\"window.savedCarouselTime = HYPE.documents['index'].currentTimeInTimelineNamed('Main Timeline'); playVideo4('video')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:27,k:"div",D:"#D8DDE4",a:1020,b:283},"304":{h:"236",p:"no-repeat",x:"visible",a:0,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:2,k:"div",b:0,d:670,c:980},"277":{c:208,d:71,r:"inline",I:"Solid",e:1,J:"Solid",K:"Solid",L:"Solid",M:0,w:"<a onclick=\"window.savedCarouselTime = HYPE.documents['index'].currentTimeInTimelineNamed('Main Timeline'); playVideo1('video')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:30,k:"div",D:"#D8DDE4",a:386,b:283},"323":{h:"32",p:"no-repeat",x:"visible",a:46,q:"100% 100%",b:163,j:"absolute",r:"inline",z:17,bF:"318",dB:"img",d:71,aA:{a:[{p:0}]},k:"div",e:0,c:208,aP:"pointer"},"296":{h:"206",p:"no-repeat",x:"visible",a:26,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:9,bF:"295",b:279,d:147,k:"div",c:260},"310":{h:"209",p:"no-repeat",x:"visible",a:26,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:9,bF:"307",b:279,d:147,k:"div",c:260},"283":{h:"32",p:"no-repeat",x:"visible",a:46,q:"100% 100%",b:163,j:"absolute",r:"inline",z:15,bF:"281",dB:"img",d:71,k:"div",c:208,e:0,aP:"pointer"},"318":{c:300,cP:"habs-card",d:440,cQ:0.6,e:0,aW:0.068014706,cA:false,cR:0.6,aX:2.99816,i:"card5",j:"absolute",x:"visible",k:"div",bX:false,z:3,cV:[],bY:1,a:340,bZ:180,b:120},"305":{h:"138",p:"no-repeat",x:"visible",a:29,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:16,k:"div",b:589,d:59,c:163},"278":{h:"134",p:"no-repeat",x:"visible",a:470,dB:"img",q:"100% 100%",j:"absolute",r:"inline",aA:{a:[{exportScriptOid:"DoubleClick DCM.hype-export.py",label:"Exit",p:15,s:"hypeAdExit",t:[]},{p:5,j:"https://www.bell.ca/",k:false}]},z:31,b:597,d:40,k:"div",c:40,aP:"pointer"},"324":{h:"269",p:"no-repeat",x:"visible",a:18,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:11,bF:"318",b:27,d:70,k:"div",c:200},"297":{w:"",h:"188",p:"no-repeat",x:"visible",a:0,q:"100% 100%",b:0,j:"absolute",bF:"295",r:"inline",z:8,dB:"img",d:440,k:"div",c:300,e:1},"311":{h:"177",p:"no-repeat",x:"visible",a:198,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:10,bF:"307",b:32,d:61,k:"div",c:84},"284":{h:"185",p:"no-repeat",x:"visible",a:18,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:11,bF:"281",b:27,d:70,k:"div",c:200},"319":{h:"276",p:"no-repeat",x:"visible",a:201,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:10,bF:"318",b:29,d:64,k:"div",c:88},"306":{c:980,d:670,r:"inline",I:"Solid",e:1,J:"Solid",cQ:1,K:"Solid",cR:1,L:"Solid",aP:"pointer",M:0,bN:{a:[{p:10,y:true,c:0,A:1,K:1,symbolOid:"2",b:"kTimelineDefaultIdentifier"},{p:4,h:"55"}]},w:"",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:24,k:"div",D:"#D8DDE4",a:0,b:0},"279":{bR:0,h:"169",p:"no-repeat",x:"visible",a:908,q:"100% 100%",b:290,j:"absolute",r:"inline",z:23,dB:"img",k:"div",d:65,c:42,aY:0,e:0.4,f:180},"290":{c:272,d:153,r:"inline",I:"Solid",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video width=\"100%\" height=\"100%\" preload=\"metadata\" id=\"video\">\n    <source src=\"index.hyperesources/Video3_Slaf.mp4\">\n</video>",bF:"288",A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",N:0,O:0,C:"#D8DDE4",z:12,P:0,D:"#D8DDE4",k:"div",a:14,b:122},"298":{w:"",h:"32",p:"no-repeat",x:"visible",a:46,q:"100% 100%",b:163,j:"absolute",bF:"295",r:"inline",z:15,dB:"img",d:71,k:"div",c:208,e:1,aP:"pointer"},"325":{h:"136",p:"no-repeat",x:"visible",a:803,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:15,k:"div",b:600,d:34,c:143},"312":{w:"",h:"188",p:"no-repeat",x:"visible",a:0,q:"100% 100%",b:0,j:"absolute",bF:"307",r:"inline",z:8,dB:"img",d:440,k:"div",c:300,e:1},"285":{c:272,d:153,r:"inline",I:"Solid",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video width=\"100%\" height=\"100%\" preload=\"metadata\" id=\"video\">\n    <source src=\"index.hyperesources/Video2_Suzuki.mp4\">\n</video>",bF:"281",A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",N:0,O:0,C:"#D8DDE4",z:12,P:0,D:"#D8DDE4",k:"div",a:14,b:122},"307":{c:300,cP:"habs-card",d:440,cQ:0.6,e:0,aW:0.068014706,cA:false,cR:0.6,aX:2.99816,i:"card4",j:"absolute",x:"visible",k:"div",bX:false,z:5,cV:[],bY:1,a:340,bZ:180,b:120},"291":{w:"",h:"188",p:"no-repeat",x:"visible",a:0,q:"100% 100%",b:0,j:"absolute",bF:"288",r:"inline",z:8,dB:"img",d:440,k:"div",c:300,e:1},"299":{h:"184",p:"no-repeat",x:"visible",a:18,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:11,bF:"295",b:27,d:70,k:"div",c:200},"313":{h:"205",p:"no-repeat",x:"visible",a:18,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:11,bF:"307",b:27,d:70,k:"div",c:200},"286":{w:"",h:"188",p:"no-repeat",x:"visible",a:0,q:"100% 100%",b:0,j:"absolute",bF:"281",r:"inline",z:8,dB:"img",d:440,k:"div",c:300,e:1},"300":{h:"174",p:"no-repeat",x:"visible",a:200,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:10,bF:"295",b:32,d:61,k:"div",c:84},"308":{h:"32",p:"no-repeat",x:"visible",a:46,q:"100% 100%",b:163,j:"absolute",r:"inline",z:15,bF:"307",dB:"img",d:71,aA:{a:[{p:0}]},k:"div",e:0,c:208,aP:"pointer"},"292":{h:"176",p:"no-repeat",x:"visible",a:198,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:10,bF:"288",b:32,d:61,k:"div",c:84},"314":{c:208,d:71,I:"Solid",e:1,J:"Solid",K:"Solid",L:"Solid",M:0,w:"<a onclick=\"window.savedCarouselTime = HYPE.documents['index'].currentTimeInTimelineNamed('Main Timeline'); playVideo5('video')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:26,k:"div",D:"#D8DDE4",a:1020,b:283},"287":{w:"",h:"207",p:"no-repeat",x:"visible",a:26,q:"100% 100%",b:279,j:"absolute",r:"inline",z:10,bF:"281",dB:"img",d:147,k:"div",c:260},"301":{c:272,d:153,r:"inline",I:"Solid",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video width=\"100%\" height=\"100%\" preload=\"metadata\" id=\"video\">\n    <source src=\"index.hyperesources/Video1_Caufield.mp4\">\n</video>",bF:"295",A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",N:0,O:0,C:"#D8DDE4",z:12,P:0,D:"#D8DDE4",k:"div",a:14,b:122},"309":{c:272,d:153,r:"inline",I:"Solid",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video width=\"100%\" height=\"100%\" preload=\"metadata\" id=\"video\">\n    <source src=\"index.hyperesources/Video4_Hutson.mp4\">\n</video>",bF:"307",A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",N:0,O:0,C:"#D8DDE4",z:12,P:0,D:"#D8DDE4",k:"div",a:14,b:122},"320":{w:"",h:"188",p:"no-repeat",x:"visible",a:0,q:"100% 100%",b:0,j:"absolute",bF:"318",r:"inline",z:8,dB:"img",d:440,k:"div",c:300,e:1},"293":{h:"208",p:"no-repeat",x:"visible",a:26,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:9,bF:"288",b:279,d:147,k:"div",c:260},"280":{c:208,d:71,I:"Solid",e:1,J:"Solid",K:"Solid",L:"Solid",M:0,w:"<a onclick=\"window.savedCarouselTime = HYPE.documents['index'].currentTimeInTimelineNamed('Main Timeline'); playVideo2('video')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:29,k:"div",D:"#D8DDE4",a:1020,b:283},"288":{c:300,cP:"habs-card",d:440,cQ:0.6,e:0,aW:0.068014706,cA:false,cR:0.6,aX:2.99816,i:"card3",j:"absolute",x:"visible",k:"div",bX:false,z:6,cV:[],bY:1,a:340,bZ:180,b:120},"315":{h:"234",p:"no-repeat",x:"visible",a:79,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:22,k:"div",b:31,d:76,c:821},"302":{c:978,d:668,r:"none",I:"Solid",cQ:1,J:"Solid",K:"Solid",cR:1,L:"Solid",M:1,N:1,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:1,P:1,C:"#D8DDE4",z:1,l:0,D:"#D8DDE4",m:"#003078",k:"div",n:"#0070CE",a:0,b:0},"321":{h:"272",p:"no-repeat",x:"visible",a:26,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:9,bF:"318",b:279,d:147,k:"div",c:260},"294":{h:"186",p:"no-repeat",x:"visible",a:18,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:11,bF:"288",b:32,d:59,k:"div",c:169},"281":{b:120,c:300,cP:"habs-card",bK:1,d:440,e:0.6,cQ:0.8,aW:0.068014706,f:0,cA:false,cR:0.8,aX:2.99816,i:"card2",aY:0,j:"absolute",x:"visible",k:"div",bX:false,z:13,cV:[],bY:1,a:560,bZ:180,bR:0},"289":{h:"32",p:"no-repeat",x:"visible",a:46,q:"100% 100%",b:163,j:"absolute",r:"inline",z:15,bF:"288",dB:"img",d:71,aA:{a:[{p:0}]},k:"div",e:0,c:208,aP:"pointer"},"316":{h:"169",p:"no-repeat",x:"visible",a:25,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:21,b:290,k:"div",d:65,c:42,e:0.4},"303":{c:208,d:71,I:"Solid",e:1,J:"Solid",K:"Solid",L:"Solid",M:0,w:"<a onclick=\"window.savedCarouselTime = HYPE.documents['index'].currentTimeInTimelineNamed('Main Timeline'); playVideo3('video')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:28,k:"div",D:"#D8DDE4",a:1020,b:283},"322":{c:272,d:153,r:"inline",I:"Solid",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video width=\"100%\" height=\"100%\" preload=\"metadata\" id=\"video\">\n    <source src=\"index.hyperesources/Video5_Houde.mp4\">\n</video>",bF:"318",A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",N:0,O:0,C:"#D8DDE4",z:14,P:0,D:"#D8DDE4",k:"div",a:14,b:122},"295":{c:300,cP:"habs-card",d:440,cQ:0.98,e:1,aW:0.068014706,cA:false,cR:0.98,aX:2.99816,i:"card1",j:"absolute",x:"visible",k:"div",bX:false,z:14,cV:[],bY:1,a:340,bZ:180,b:120}}},{o:"59",p:"600px",cA:false,Y:980,Z:670,L:[],c:"#FFF",bY:1,d:980,U:{},T:{kTimelineDefaultIdentifier:{q:false,z:0,i:"kTimelineDefaultIdentifier",n:"Main Timeline",a:[],f:30,b:[]}},bZ:180,O:["334","333","336","331","335","332"],n:"Untitled Layout","_":1,v:{"334":{c:978,d:668,I:"Solid",cQ:1,J:"Solid",K:"Solid",cR:1,L:"Solid",M:1,w:"",N:1,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:1,P:1,C:"#D8DDE4",z:1,l:0,D:"#D8DDE4",m:"#003078",k:"div",n:"#0070CE",a:0,b:0},"331":{h:"138",p:"no-repeat",x:"visible",a:29,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:5,k:"div",b:589,d:59,c:163},"335":{h:"134",p:"no-repeat",x:"visible",a:470,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:4,k:"div",b:597,d:40,c:40},"332":{h:"136",p:"no-repeat",x:"visible",a:803,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:2,k:"div",b:600,d:34,c:143},"336":{w:"<a onclick=\"closeVideo('video1')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",h:"84",p:"no-repeat",x:"visible",a:890,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:15,b:50,k:"div",d:40,c:40},"333":{c:900,d:506,r:"inline",I:"Solid",J:"Solid",K:"Solid",L:"Solid",M:0,i:"video",w:"<video ontimeupdate=\"trackVideo()\" width=\"100%\" height=\"100%\" controls=\"\" preload=\"metadata\" id=\"video1\" onended=\"closeVideo('video')\">\n    <source src=\"index.hyperesources/Video1_Caufield.mp4\">\n    Votre navigateur ne supporte pas la vid\u00e9o.\n</video>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:14,k:"div",D:"#D8DDE4",a:40,b:40}}},{o:"113",p:"600px",cA:false,Y:980,Z:670,L:[],c:"#FFF",bY:1,d:980,U:{},T:{kTimelineDefaultIdentifier:{q:false,z:0,i:"kTimelineDefaultIdentifier",n:"Main Timeline",a:[],f:30,b:[]}},bZ:180,O:["340","337","341","338","342","339"],n:"Untitled Layout","_":2,v:{"337":{c:900,d:506,I:"Solid",r:"inline",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video ontimeupdate=\"trackVideo()\" width=\"100%\" height=\"100%\" controls=\"\" preload=\"metadata\" id=\"video2\" onended=\"closeVideo('video')\">\n    <source src=\"index.hyperesources/Video2_Suzuki.mp4\">\n    Votre navigateur ne supporte pas la vid\u00e9o.\n</video>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:12,k:"div",D:"#D8DDE4",a:40,b:40},"342":{h:"134",p:"no-repeat",x:"visible",a:470,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:4,k:"div",b:597,d:40,c:40},"338":{h:"138",p:"no-repeat",x:"visible",a:29,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:5,k:"div",b:589,d:59,c:163},"340":{c:978,d:668,r:"inline",I:"Solid",cQ:1,J:"Solid",K:"Solid",cR:1,L:"Solid",M:1,w:"",N:1,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:1,P:1,C:"#D8DDE4",z:1,l:0,D:"#D8DDE4",m:"#003078",k:"div",n:"#0070CE",a:0,b:0},"339":{h:"136",p:"no-repeat",x:"visible",a:803,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:2,k:"div",b:600,d:34,c:143},"341":{w:"<a onclick=\"closeVideo('video2')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",h:"84",p:"no-repeat",x:"visible",a:890,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:13,b:50,k:"div",d:40,c:40}}},{o:"119",p:"600px",cA:false,Y:980,Z:670,L:[],c:"#FFF",bY:1,d:980,U:{},T:{kTimelineDefaultIdentifier:{q:false,z:0,i:"kTimelineDefaultIdentifier",n:"Main Timeline",a:[],f:30,b:[]}},bZ:180,O:["348","346","344","345","343","347"],n:"Untitled Layout","_":3,v:{"346":{c:900,d:506,I:"Solid",r:"inline",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video ontimeupdate=\"trackVideo()\" width=\"100%\" height=\"100%\" controls=\"\" preload=\"metadata\" id=\"video3\" onended=\"closeVideo('video')\">\n    <source src=\"index.hyperesources/Video3_Slaf.mp4\">\n    Votre navigateur ne supporte pas la vid\u00e9o.\n</video>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:12,k:"div",D:"#D8DDE4",a:40,b:40},"343":{h:"134",p:"no-repeat",x:"visible",a:470,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:4,k:"div",b:597,d:40,c:40},"347":{h:"136",p:"no-repeat",x:"visible",a:803,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:2,k:"div",b:600,d:34,c:143},"344":{w:"<a onclick=\"closeVideo('video3')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",h:"84",p:"no-repeat",x:"visible",a:890,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:14,b:50,k:"div",d:40,c:40},"348":{c:978,d:668,r:"inline",I:"Solid",cQ:1,J:"Solid",K:"Solid",cR:1,L:"Solid",M:1,w:"",N:1,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:1,P:1,C:"#D8DDE4",z:1,l:0,D:"#D8DDE4",m:"#003078",k:"div",n:"#0070CE",a:0,b:0},"345":{h:"138",p:"no-repeat",x:"visible",a:29,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:5,k:"div",b:589,d:59,c:163}}},{o:"125",p:"600px",cA:false,Y:980,Z:670,L:[],c:"#FFF",bY:1,d:980,U:{},T:{kTimelineDefaultIdentifier:{q:false,z:0,i:"kTimelineDefaultIdentifier",n:"Main Timeline",a:[],f:30,b:[]}},bZ:180,O:["350","354","349","352","353","351"],n:"Untitled Layout","_":4,v:{"349":{w:"<a onclick=\"closeVideo('video4')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",h:"84",p:"no-repeat",x:"visible",a:890,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:10,b:50,k:"div",d:40,c:40},"351":{h:"136",p:"no-repeat",x:"visible",a:803,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:2,k:"div",b:600,d:34,c:143},"354":{c:900,d:506,I:"Solid",r:"inline",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video ontimeupdate=\"trackVideo()\" width=\"100%\" height=\"100%\" controls=\"\" preload=\"metadata\" id=\"video4\" onended=\"closeVideo('video')\">\n    <source src=\"index.hyperesources/Video4_Hutson.mp4\">\n    Votre navigateur ne supporte pas la vid\u00e9o.\n</video>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:9,k:"div",D:"#D8DDE4",a:40,b:40},"352":{h:"138",p:"no-repeat",x:"visible",a:29,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:5,k:"div",b:589,d:59,c:163},"353":{h:"134",p:"no-repeat",x:"visible",a:470,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:4,k:"div",b:597,d:40,c:40},"350":{c:978,d:668,r:"inline",I:"Solid",cQ:1,J:"Solid",K:"Solid",cR:1,L:"Solid",M:1,w:"",N:1,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:1,P:1,C:"#D8DDE4",z:1,l:0,D:"#D8DDE4",m:"#003078",k:"div",n:"#0070CE",a:0,b:0}}},{o:"131",p:"600px",cA:false,Y:980,Z:670,L:[],c:"#FFF",bY:1,d:980,U:{},T:{kTimelineDefaultIdentifier:{q:false,z:0,i:"kTimelineDefaultIdentifier",n:"Main Timeline",a:[],f:30,b:[]}},bZ:180,O:["360","358","359","357","355","356"],n:"Untitled Layout","_":5,v:{"358":{c:900,d:506,I:"Solid",r:"inline",J:"Solid",K:"Solid",L:"Solid",M:0,w:"<video ontimeupdate=\"trackVideo()\" width=\"100%\" height=\"100%\" controls=\"\" preload=\"metadata\" id=\"video5\" onended=\"closeVideo('video')\">\n    <source src=\"index.hyperesources/Video5_Houde.mp4\">\n    Votre navigateur ne supporte pas la vid\u00e9o.\n</video>",N:0,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:0,P:0,C:"#D8DDE4",z:12,k:"div",D:"#D8DDE4",a:40,b:40},"355":{h:"134",p:"no-repeat",x:"visible",a:470,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:3,k:"div",b:597,d:40,c:40},"359":{w:"<a onclick=\"closeVideo('video5')\" data-prevent-touch=\"\" style=\"width:100%; height:100%; display:block; background:transparent\"></a>",h:"84",p:"no-repeat",x:"visible",a:890,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:14,b:50,k:"div",d:40,c:40},"356":{h:"136",p:"no-repeat",x:"visible",a:803,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:2,k:"div",b:600,d:34,c:143},"360":{c:978,d:668,r:"inline",I:"Solid",cQ:1,J:"Solid",K:"Solid",cR:1,L:"Solid",M:1,w:"",N:1,A:"#D8DDE4",x:"visible",j:"absolute",B:"#D8DDE4",O:1,P:1,C:"#D8DDE4",z:1,l:0,D:"#D8DDE4",m:"#003078",k:"div",n:"#0070CE",a:0,b:0},"357":{h:"138",p:"no-repeat",x:"visible",a:29,dB:"img",q:"100% 100%",j:"absolute",r:"inline",z:5,k:"div",b:589,d:59,c:163}}}],{},h,{},null,false,true,-1,true,true,false,true,true);d[f]=c.API;document.getElementById(g).setAttribute("HYP_dn",f);c.z_o(this.body)})();})();
+
+	</script>
+  </body>
+</html>
